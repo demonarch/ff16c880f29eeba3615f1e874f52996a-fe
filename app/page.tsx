@@ -7,7 +7,7 @@ import { processImage } from "./services/api";
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [processedImage, setProcessedImage] = useState<string | null>(null);
+  const [processedImageUrl, setProcessedImageUrl] = useState<string | null>(null);
   const [selectedPhase, setSelectedPhase] = useState<string>("arterial");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +16,7 @@ export default function Home() {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(file);
-      setProcessedImage(null);
+      setProcessedImageUrl(null);
       setError(null);
       
       // Create preview
@@ -30,7 +30,7 @@ export default function Home() {
 
   const handlePhaseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedPhase(e.target.value);
-    setProcessedImage(null);
+    setProcessedImageUrl(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +46,7 @@ export default function Home() {
 
     try {
       const data = await processImage(selectedImage, selectedPhase);
-      setProcessedImage(data.processed_image);
+      setProcessedImageUrl(data.processedImageUrl);
     } catch (err) {
       setError(`Error processing image: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
@@ -138,14 +138,14 @@ export default function Home() {
             </div>
           )}
           
-          {processedImage && (
+          {processedImageUrl && (
             <div className="border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
               <h2 className="text-xl font-medium mb-3 text-black dark:text-zinc-50">
                 Processed Image ({selectedPhase === "arterial" ? "Arterial Phase" : "Venous Phase"})
               </h2>
               <div className="aspect-square relative overflow-hidden rounded-md bg-zinc-100 dark:bg-zinc-800">
                 <img 
-                  src={processedImage} 
+                  src={processedImageUrl} 
                   alt="Processed" 
                   className="object-contain w-full h-full"
                 />
