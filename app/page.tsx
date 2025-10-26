@@ -195,13 +195,34 @@ export default function Home() {
           
           {processedImageUrl && (
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-              <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  Processed Image
-                </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {selectedPhase === "arterial" ? "Arterial Phase - Enhanced contrast" : "Venous Phase - Gaussian smoothing"}
-                </p>
+              <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                    Processed Image
+                  </h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {selectedPhase === "arterial" ? "Arterial Phase - Enhanced contrast" : "Venous Phase - Gaussian smoothing"}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    // Create a temporary anchor element
+                    const link = document.createElement('a');
+                    link.href = processedImageUrl;
+                    link.download = `processed-${selectedPhase}-${selectedImage?.name || 'image'}`; 
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                  className="flex items-center space-x-1 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-colors text-sm font-medium"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>Save Image</span>
+                </button>
               </div>
               <div className="aspect-square relative overflow-hidden bg-gray-50 dark:bg-gray-900">
                 <img 
