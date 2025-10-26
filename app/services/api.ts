@@ -15,7 +15,7 @@ export async function processImage(file: File, phase: string): Promise<{ process
 
   // In production, use the Hugging Face URL
   const apiUrl = process.env.NODE_ENV === "production" 
-    ? "https://huggingface.co/spaces/demonarch/ff16c880f29eeba3615f1e874f52996a-be/process"
+    ? "https://demonarch-ff16c880f29eeba3615f1e874f52996a-be.hf.space/process"
     : "http://localhost:8000/process";
 
   // Request binary data instead of JSON
